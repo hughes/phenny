@@ -6,6 +6,12 @@ Licensed under the Eiffel Forum License 2.
 
 http://inamidst.com/phenny/
 """
+def ping(phenny, input):
+   phenny.say('pong')
+ping.commands=['ping']
+ping.priority='medium'
+
+
 
 def doc(phenny, input): 
    """Shows a command's documentation, and possibly an example."""

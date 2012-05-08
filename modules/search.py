@@ -9,6 +9,20 @@ http://inamidst.com/phenny/
 
 import re
 import web
+from HTMLParser import HTMLParser
+class MLStripper(HTMLParser):
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
 
 class Grab(web.urllib.URLopener):
    def __init__(self, *args):
@@ -38,6 +52,14 @@ def google_search(query):
       print results
       return False
 
+def better_search(query):
+   results = google_ajax(query)
+   try: return results['responseData']['results'][0]
+   except IndexError: return None
+   except TypeError:
+      print results
+      return False
+
 def google_count(query): 
    results = google_ajax(query)
    if not results.has_key('responseData'): return '0'
@@ -59,9 +81,11 @@ def g(phenny, input):
    if not query: 
       return phenny.reply('.g what?')
    query = query.encode('utf-8')
-   uri = google_search(query)
+   result = better_search(query)
+   uri = result['unescapedUrl']
+   title = strip_tags(result['title'])
    if uri: 
-      phenny.reply(uri)
+      phenny.reply(uri + " - " + title)
       if not hasattr(phenny.bot, 'last_seen_uri'):
          phenny.bot.last_seen_uri = {}
       phenny.bot.last_seen_uri[input.sender] = uri
@@ -118,25 +142,47 @@ def bing_search(query, lang='en-GB'):
    if m: return m.group(1)
 
 def bing(phenny, input): 
-   """Queries Bing for the specified input."""
-   query = input.group(2)
-   if query.startswith(':'): 
-      lang, query = query.split(' ', 1)
-      lang = lang[1:]
-   else: lang = 'en-GB'
-   if not query:
-      return phenny.reply('.bing what?')
+   """Why the hell would you use bing?"""
+   responses = [
+     "Why would you do that?",
+     "Why the hell would you use Bing?",
+     "Just don't. Please.",
+     "Really?",
+     "1 result: you're a fool.",
+     "Go jump in a lake.",
+     "Bing is currently down.",
+     "BRB killing the bing servers",
+     "No relevant results.",
+     "Please use .g to search google.",
+     "Please wait while Bing indexes some google results",
+     "LOL",
+     "It looks like you're trying to search the internet! Would you like help spelling g-o-o-g-l-e?",
+     "Error: query base 'http://www.bing.com/search?mkt=%s&q=' unreachable",
+     "1 result found: http://www.lemonparty.org",
+     "*dies*",
+     "I'm sorry, I can't let you do that.",
+   ]
+   from random import choice
+   return phenny.reply(choice(responses))
+   
+   # query = input.group(2)
+   # if query.startswith(':'): 
+   #    lang, query = query.split(' ', 1)
+   #    lang = lang[1:]
+   # else: lang = 'en-GB'
+   # if not query:
+   #    return phenny.reply('.bing what?')
 
-   query = query.encode('utf-8')
-   uri = bing_search(query, lang)
-   if uri: 
-      phenny.reply(uri)
-      if not hasattr(phenny.bot, 'last_seen_uri'):
-         phenny.bot.last_seen_uri = {}
-      phenny.bot.last_seen_uri[input.sender] = uri
-   else: phenny.reply("No results found for '%s'." % query)
+   # query = query.encode('utf-8')
+   # uri = bing_search(query, lang)
+   # if uri: 
+   #    phenny.reply(uri)
+   #    if not hasattr(phenny.bot, 'last_seen_uri'):
+   #       phenny.bot.last_seen_uri = {}
+   #    phenny.bot.last_seen_uri[input.sender] = uri
+   # else: phenny.reply("No results found for '%s'." % query)
 bing.commands = ['bing']
-bing.example = '.bing swhack'
+bing.example = '.bing How do I get to google'
 
 r_duck = re.compile(r'nofollow" class="[^"]+" href="(.*?)">')
 

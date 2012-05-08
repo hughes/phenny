@@ -28,6 +28,7 @@ subs = [
 ]
 
 def calc(phenny, input): 
+   return c(phenny,input)
    """Use the Frink online calculator."""
    q = input.group(2)
    if not q: 
