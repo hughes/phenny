@@ -217,9 +217,9 @@ def currencyconvert(phenny, input):
   tokens = query.split()
   amount = tokens[0]
   fromc = tokens[1]
-  if len(tokens) == 3
+  if len(tokens) == 3:
     toc = tokens[2]
-  else
+  else:
     toc = tokens[3]
 
   currencyline = urllib2.urlopen('http://www.google.com/ig/calculator?hl=en&q=' + fromc + '%3D%3F' + toc).read()
