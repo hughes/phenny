@@ -207,7 +207,8 @@ def duck(phenny, input):
       if not hasattr(phenny.bot, 'last_seen_uri'):
          phenny.bot.last_seen_uri = {}
       phenny.bot.last_seen_uri[input.sender] = uri
-   else: phenny.reply("No results found for '%s'." % query)
+   else:
+    return phenny.reply("No results found for '%s'." % query)
 duck.commands = ['duck', 'ddg']
 
 def currencyconvert(phenny, input):
