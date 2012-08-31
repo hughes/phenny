@@ -225,7 +225,7 @@ def currencyconvert(phenny, input):
   currencyline = urllib2.urlopen('http://www.google.com/ig/calculator?hl=en&q=' + fromc + '%3D%3F' + toc).read()
   factor = re.search(".*rhs: \"(\d\.\d*)", currencyline)
   if factor:
-    return phenny.say("%s %s = %s %s" % (amount, fromc, factor*float(amount), toc))
+    return phenny.say("%s %s = %.2f %s" % (amount, fromc, factor*float(amount), toc))
   else:
     return phenny.say("unable to convert %s to %s" % (fromc, toc))
 currencyconvert.commands = ['convert']
