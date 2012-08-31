@@ -210,21 +210,25 @@ def duck(phenny, input):
    else: phenny.reply("No results found for '%s'." % query)
 duck.commands = ['duck', 'ddg']
 
-def convert(phenny, input):
+def currencyconvert(phenny, input):
   query = input.group(2)
   if not query:
     return phenny.say('.convert ## FROM to TO')
   tokens = query.split()
   amount = tokens[0]
   fromc = tokens[1]
-  toc = tokens[3]
+  if len(tokens) == 3
+    toc = tokens[2]
+  else
+    toc = tokens[3]
+
   currencyline = urllib2.urlopen('http://www.google.com/ig/calculator?hl=en&q=' + fromc + '%3D%3F' + toc).read()
   factor = re.search(".*rhs: \"(\d\.\d*)", currencyline)
   if factor:
     return phenny.say("%s %s = %s %s" % (amount, fromc, factor*float(amount), toc))
   else:
     return phenny.say("unable to convert %s to %s" % (fromc, toc))
-convert.commands = ['convert']
+currencyconvert.commands = ['convert']
 
 def search(phenny, input): 
    if not input.group(2): 
