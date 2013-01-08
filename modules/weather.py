@@ -222,34 +222,14 @@ def f_weather(self, origin, match, args):
          description = 'Violent storm'
       else: description = 'Hurricane'
 
-      degrees = wind[0:3]
-      if degrees == 'VRB': 
-         degrees = u'\u21BB'.encode('utf-8')
-      elif (degrees <= 22.5) or (degrees > 337.5): 
-         degrees = u'\u2191'.encode('utf-8')
-      elif (degrees > 22.5) and (degrees <= 67.5): 
-         degrees = u'\u2197'.encode('utf-8')
-      elif (degrees > 67.5) and (degrees <= 112.5): 
-         degrees = u'\u2192'.encode('utf-8')
-      elif (degrees > 112.5) and (degrees <= 157.5): 
-         degrees = u'\u2198'.encode('utf-8')
-      elif (degrees > 157.5) and (degrees <= 202.5): 
-         degrees = u'\u2193'.encode('utf-8')
-      elif (degrees > 202.5) and (degrees <= 247.5): 
-         degrees = u'\u2199'.encode('utf-8')
-      elif (degrees > 247.5) and (degrees <= 292.5): 
-         degrees = u'\u2190'.encode('utf-8')
-      elif (degrees > 292.5) and (degrees <= 337.5): 
-         degrees = u'\u2196'.encode('utf-8')
-
       if not icao_code.startswith('EN') and not icao_code.startswith('ED'): 
-         wind = '%s %skt (%s)' % (description, speed, degrees)
+         wind = '%s %skt' % (description, speed)
       elif icao_code.startswith('ED'): 
          kmh = int(round(speed * 1.852, 0))
-         wind = '%s %skm/h (%skt) (%s)' % (description, kmh, speed, degrees)
+         wind = '%s %skm/h (%skt)' % (description, kmh, speed)
       elif icao_code.startswith('EN'): 
          ms = int(round(speed * 0.514444444, 0))
-         wind = '%s %sm/s (%skt) (%s)' % (description, ms, speed, degrees)
+         wind = '%s %sm/s (%skt)' % (description, ms, speed)
    else: wind = '(wind unknown)'
 
    if visibility: 
