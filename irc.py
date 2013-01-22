@@ -138,7 +138,7 @@ class Bot(asynchat.async_chat):
     def dispatch(self, origin, args):
         pass
 
-    def msg(self, recipient, text):
+    def msg(self, recipient, text, action=False):
         self.sending.acquire()
 
         # Cf. http://swhack.com/logs/2006-03-01#T19-43-25
@@ -174,11 +174,18 @@ class Bot(asynchat.async_chat):
         def safe(input):
             input = input.replace('\n', '')
             return input.replace('\r', '')
+
+        if action:
+            text = "%sACTION %s%s" % (chr(1), text, chr(1))
+
         self.__write(('PRIVMSG', safe(recipient)), safe(text))
         self.stack.append((time.time(), text))
         self.stack = self.stack[-10:]
 
         self.sending.release()
+
+    def do(self, recipient, text):
+        self.msg(recipient, text, action=True)
 
     def notice(self, dest, text):
         self.write(('NOTICE', dest), text)

@@ -175,6 +175,8 @@ class Phenny(irc.Bot):
                             self.bot.msg(sender, origin.nick + ': ' + msg))
                 elif attr == 'say':
                     return lambda msg: self.bot.msg(sender, msg)
+                elif attr == 'do':
+                    return lambda msg: self.bot.do(sender, msg)
                 return getattr(self.bot, attr)
 
         return PhennyWrapper(self)
@@ -213,7 +215,7 @@ class Phenny(irc.Bot):
 
     def dispatch(self, origin, args):
         bytes, event, args = args[0], args[1], args[2:]
-        text = decode(bytes)
+        text = decode(bytes).replace(chr(1), "")
 
         for priority in ('high', 'medium', 'low'):
             items = self.commands[priority].items()
