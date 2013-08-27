@@ -25,7 +25,7 @@ def f_weather(self, command):
         string.capitalize(result['current_conditions']['text']),
         result['current_conditions']['temperature'],
         result['units']['temperature'],
-        string.capitalize(locations[0][1]))
+        locations[0][1])
 
     return self.msg(command.sender, output.encode('utf-8'))
 
