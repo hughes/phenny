@@ -1,6 +1,9 @@
 import os
 import simplejson
 import requests
+import random
+from time import sleep
+import re
 
 dotdir = os.path.expanduser('~/.phenny')
 cookie_file = dotdir+'/eugene.json'
@@ -46,7 +49,9 @@ def eugene(phenny, input):
     if len(r.cookies):
         set_cookie(input.nick, r.cookies['JSESSIONID'])
 
-    phenny.reply(r.text)
+    sleep(random.randrange(2,5))
+    reply = re.sub('Eugene', 'SkizzyBot')
+    phenny.reply(reply)
 
 eugene.rule = r'$nickname:?'
 eugene.priority = 'low'
