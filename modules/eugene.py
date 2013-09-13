@@ -50,7 +50,7 @@ def eugene(phenny, input):
         set_cookie(input.nick, r.cookies['JSESSIONID'])
 
     sleep(random.randrange(2,5))
-    reply = re.sub('Eugene', 'SkizzyBot')
+    reply = re.sub('Eugene', 'SkizzyBot', r.text)
     phenny.reply(reply)
 
 eugene.rule = r'$nickname:?'
