@@ -5,7 +5,7 @@ Author: Sean B. Palmer, inamidst.com
 About: http://inamidst.com/phenny/
 """
 
-import re, urllib
+import re, urllib, json as shit
 from htmlentitydefs import name2codepoint
 
 class Grab(urllib.URLopener): 
@@ -62,10 +62,7 @@ env = {'__builtins__': None, 'null': None, 'true': True, 'false': False}
 
 def json(text): 
    """Evaluate JSON text safely (we hope)."""
-   if r_json.match(r_string.sub('', text)): 
-      text = r_string.sub(lambda m: 'u' + m.group(1), text)
-      return eval(text.strip(' \t\r\n'), env, {})
-   raise ValueError('Input must be serialised JSON.')
+   return shit.loads(text)
 
 if __name__=="__main__": 
    main()
